@@ -40,7 +40,25 @@ os = OpenSearch(
     connection_class=RequestsHttpConnection
 )
 
-
+def search_photos(labels):
+    if len(labels) == 0:
+        return []
+    
+    query = {
+        'query': {
+            'bool': {
+                'should': [
+                    {'match': {'labels': label}} for label in labels
+                ]
+            }
+        }
+    }
+    
+    res = os.search(index=INDEX, body=query)
+    hits = res['hits']['hits']
+    
+    return [hit['_source'] for hit in hits]
+    
 def lambda_handler(event, context):
     query = json.loads(event['queryStringParameters'])['query']
     
@@ -62,22 +80,3 @@ def lambda_handler(event, context):
         },
         'body': json.dumps(results)
     }
-
-def search_photos(labels):
-    if len(labels) == 0:
-        return []
-    
-    query = {
-        'query': {
-            'bool': {
-                'should': [
-                    {'match': {'labels': label}} for label in labels
-                ]
-            }
-        }
-    }
-    
-    res = os.search(index=INDEX, body=query)
-    hits = res['hits']['hits']
-    
-    return [hit['_source'] for hit in hits]

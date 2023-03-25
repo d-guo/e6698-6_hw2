@@ -10,8 +10,12 @@
 </head>
 
 <body>
-    <input type="file" id="imageFile" name="imageFile" onchange="postImage(event)">
-    <input type="submit">
+    <form>
+        <input type="file" id="imageFile" name="imageFile">
+        <input type="submit" onclick="postImage(event)">
+    </form>
+
+    <input type="submit" onclick="getImages(event)">
 </body>
 
 <script>
@@ -22,6 +26,18 @@
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': image.type,
                 "X-Amz-Date": "SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c",
+            }
+        });
+        alert('d');
+    }
+    function getImages(event) {
+        axios.get("https://26x4mf4nz7.execute-api.us-east-1.amazonaws.com/beta/search/", {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                "X-Amz-Date": "SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c",
+            },
+            params: {
+                query: "shoe"
             }
         });
         alert('d');
