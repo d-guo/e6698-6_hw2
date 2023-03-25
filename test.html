@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Ass2</title>
+    <meta name="description" content="Our first page">
+    <meta name="keywords" content="html tutorial template">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+</head>
+
+<body>
+    <input type="file" id="imageFile" name="imageFile" onchange="postImage(event)">
+    <input type="submit">
+</body>
+
+<script>
+    function postImage(event) {
+        let image = event.target.files[0];
+        axios.put("https://26x4mf4nz7.execute-api.us-east-1.amazonaws.com/beta/upload/b2-ass2/" + image.name, image, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': image.type,
+                "X-Amz-Date": "SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c",
+            }
+        });
+        alert('d');
+    }
+</script>
+
+</html>
