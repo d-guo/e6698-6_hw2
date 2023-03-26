@@ -12,26 +12,35 @@
 <body>
     <form>
         <input type="file" id="imageFile" name="imageFile">
-        <input type="submit" onclick="postImage(event)">
+        <input type="submit" onclick="postImage()">
     </form>
 
     <input type="submit" onclick="getImages(event)">
 </body>
 
 <script>
-    function postImage(event) {
-        let image = event.target.files[0];
-        axios.put("https://26x4mf4nz7.execute-api.us-east-1.amazonaws.com/beta/upload/b2-ass2/" + image.name, image, {
+    function postImage() {
+        // let image = event.target.files[0];
+        let image = document.getElementById('imageFile')
+        console.log(image.files[0])
+
+        // idek if we should be doing formData but its the only format that shows anything
+        // in browser requests, errors are there anyway
+        const formData = new FormData();
+        formData.append('image', image.files[0]);
+
+        const response = axios.put('https://mr3cyfkh1f.execute-api.us-east-1.amazonaws.com/beta/upload/b2-ass2/' + image.files[0].name, formData, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Content-Type': image.type,
+                'Content-Type': 'multipart/form-data',
                 "X-Amz-Date": "SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c",
-            }
+            },
         });
         alert('d');
     }
+
     function getImages(event) {
-        axios.get("https://26x4mf4nz7.execute-api.us-east-1.amazonaws.com/beta/search/", {
+        axios.get("https://mr3cyfkh1f.execute-api.us-east-1.amazonaws.com/beta/search/", {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 "X-Amz-Date": "SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c",
