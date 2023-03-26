@@ -19,34 +19,44 @@
 </body>
 
 <script>
-    function postImage() {
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+
+    async function postImage() {
         // let image = event.target.files[0];
         let image = document.getElementById('imageFile')
         console.log(image.files[0])
+        console.log(image.files[0].type)
 
         // idek if we should be doing formData but its the only format that shows anything
         // in browser requests, errors are there anyway
-        const formData = new FormData();
-        formData.append('image', image.files[0]);
+        // const formData = new FormData();
+        // formData.append('image', image.files[0]);
+        let image_data = await toBase64(image.files[0])
+        console.log(image_data)
 
-        const response = axios.put('https://mr3cyfkh1f.execute-api.us-east-1.amazonaws.com/beta/upload/b2-ass2/' + image.files[0].name, formData, {
+        const response = axios.put('https://mr3cyfkh1f.execute-api.us-east-1.amazonaws.com/beta/upload/b2-ass2/' + image.files[0].name, image_data, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'multipart/form-data',
-                "X-Amz-Date": "SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c",
+                'Content-Type': 'text/base64',
+                'X-Amz-Date': 'SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c',
             },
         });
         alert('d');
     }
 
     function getImages(event) {
-        axios.get("https://mr3cyfkh1f.execute-api.us-east-1.amazonaws.com/beta/search/", {
+        axios.get('https://mr3cyfkh1f.execute-api.us-east-1.amazonaws.com/beta/search/', {
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                "X-Amz-Date": "SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c",
+                'X-Amz-Date': 'SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c',
             },
             params: {
-                query: "shoe"
+                query: 'shoe'
             }
         });
         alert('d');
