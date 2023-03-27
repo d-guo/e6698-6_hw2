@@ -12,10 +12,14 @@
 <body>
     <form>
         <input type="file" id="imageFile" name="imageFile">
-        <input type="submit" onclick="postImage()">
+        <input type="submit" value="Submit Image" onclick="postImage()">
     </form>
 
-    <input type="submit" onclick="getImages(event)">
+    <input type="submit" value="Get Image" onclick="getImages(event)">
+
+    <div id="container">
+
+    </div>
 </body>
 
 <script>
@@ -56,9 +60,22 @@
                 'X-Amz-Date': 'SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c',
             },
             params: {
-                query: 'shoe'
+                query: 'book'
             }
-        });
+        }).then(
+            (res) => {
+                let images = res.data
+                images.forEach(
+                    (image) => {
+                        const img = document.createElement('img');
+                        img.src = "data:image/jpeg;base64," + image;
+                        document.getElementById('container').appendChild(img);
+                    }
+                );
+                
+            }
+        );
+        
         alert('d');
     }
 </script>
