@@ -35,7 +35,7 @@ phases:
   build:
     commands:
       - echo "Building Lambda functions..."
-      - cd lambda_functions/LF1_folder
+      - cd LF1_folder
       - pip install -r requirements.txt -t .
       - zip -r ../LF1.zip .
       - cd ..
