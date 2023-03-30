@@ -35,15 +35,14 @@ phases:
   build:
     commands:
       - echo "Building Lambda functions..."
-      - ls
-      - cd LF1_folder
+      - cd lambda_functions/LF1_folder
       - pip install -r requirements.txt -t .
-      - zip -r ../LF1.zip .
-      - cd ..
-      - cd LF2_folder
+      - zip -r ../../LF1.zip .
+      - cd ../..
+      - cd lambda_functions/LF2_folder
       - pip install -r requirements.txt -t .
-      - zip -r ../LF2.zip .
-      - cd ..
+      - zip -r ../../LF2.zip .
+      - cd ../..
   post_build:
     commands:
       # - aws lambda update-function-code --function-name $LAMBDA_NAME --region $AWS_DEFAULT_REGION --zip-file fileb://lambda-index-package.zip
