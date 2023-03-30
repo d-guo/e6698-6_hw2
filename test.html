@@ -10,13 +10,20 @@
 </head>
 
 <body>
-    <form>
-        <input type="file" id="imageFile" name="imageFile">
+    <form id="uploadForm">
+        <input type="file" id="imageFile" name="imageFile"/>
+        <br />
+        <label for="customLabels">Custom Labels (comma-separated):</label>
+        <input type="text" id="customLabels" />
+        <br />
         <input type="submit" value="Submit Image" onclick="postImage()">
     </form>
-
-    <input type="submit" value="Get Image" onclick="getImages(event)">
-
+    <form id="searchForm">
+        <label for="customLabels">Search Prompt:</label>
+        <input type="text" id="searchPrompt" />
+        <br />
+        <input type="submit" value="Get Image" onclick="getImages(event)">
+    </form>
     <div id="container">
 
     </div>
@@ -32,39 +39,37 @@
 
     async function postImage() {
         // let image = event.target.files[0];
-        let image = document.getElementById('imageFile')
-        console.log(image.files[0])
-        console.log(image.files[0].type)
+        let image = document.getElementById('imageFile');
+        let labels = document.getElementById('customLabels').value;
 
-        // idek if we should be doing formData but its the only format that shows anything
-        // in browser requests, errors are there anyway
-        // const formData = new FormData();
-        // formData.append('image', image.files[0]);
-        let image_data = await toBase64(image.files[0])
-        console.log(image_data)
+        let image_data = await toBase64(image.files[0]);
 
         const response = axios.put('https://mr3cyfkh1f.execute-api.us-east-1.amazonaws.com/beta/upload/b2-ass2/' + image.files[0].name, image_data, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'text/base64',
-                'X-Amz-Date': 'SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c',
+                'X-API-Key': 'SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c',
+                'x-amz-meta-customLabels': labels
             },
         });
         alert('d');
     }
 
     function getImages(event) {
+        event.preventDefault();
+        document.getElementById('container').innerHTML = '';
+        let user_prompt = document.getElementById('searchPrompt').value;
         axios.get('https://mr3cyfkh1f.execute-api.us-east-1.amazonaws.com/beta/search/', {
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                'X-Amz-Date': 'SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c',
+                'X-API-Key': 'SOi1mwuT0Q5D7ZiIrMJx7615n2AgsTCZ1oj2ec5c',
             },
             params: {
-                query: 'book'
+                query: user_prompt
             }
         }).then(
             (res) => {
-                let images = res.data
+                let images = res.data;
                 images.forEach(
                     (image) => {
                         const img = document.createElement('img');
@@ -72,10 +77,10 @@
                         document.getElementById('container').appendChild(img);
                     }
                 );
-                
+                console.log("REACHED HERE")
             }
         );
-        
+
         alert('d');
     }
 </script>

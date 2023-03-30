@@ -53,7 +53,7 @@ apigClientFactory.newClient = function (config) {
 
     
     // extract endpoint and path from url
-    var invokeUrl = 'https://26x4mf4nz7.execute-api.us-east-1.amazonaws.com/beta';
+    var invokeUrl = 'https://mr3cyfkh1f.execute-api.us-east-1.amazonaws.com/beta';
     var endpoint = /(^https?:\/\/[^\/]+)/g.exec(invokeUrl)[1];
     var pathComponent = invokeUrl.substring(endpoint.length);
 
@@ -137,24 +137,6 @@ apigClientFactory.newClient = function (config) {
     };
     
     
-    apigClient.uploadOptions = function (params, body, additionalParams) {
-        if(additionalParams === undefined) { additionalParams = {}; }
-        
-        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
-        
-        var uploadOptionsRequest = {
-            verb: 'options'.toUpperCase(),
-            path: pathComponent + uritemplate('/upload').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
-            headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
-            body: body
-        };
-        
-        
-        return apiGatewayClient.makeRequest(uploadOptionsRequest, authType, additionalParams, config.apiKey);
-    };
-    
-    
     apigClient.uploadFolderOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
@@ -176,12 +158,12 @@ apigClientFactory.newClient = function (config) {
     apigClient.uploadFolderObjectPut = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
-        apiGateway.core.utils.assertParametersDefined(params, ['object', 'folder'], ['body']);
+        apiGateway.core.utils.assertParametersDefined(params, ['object', 'folder', 'x-amz-meta-customLabels'], ['body']);
         
         var uploadFolderObjectPutRequest = {
             verb: 'put'.toUpperCase(),
-            path: pathComponent + uritemplate('/upload/{folder}/{object}').expand(apiGateway.core.utils.parseParametersToObject(params, ['object', 'folder'])),
-            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            path: pathComponent + uritemplate('/upload/{folder}/{object}').expand(apiGateway.core.utils.parseParametersToObject(params, ['object', 'folder', ])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, ['x-amz-meta-customLabels']),
             queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
             body: body
         };
