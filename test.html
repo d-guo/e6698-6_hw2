@@ -11,7 +11,7 @@
 
 <body>
     <form id="uploadForm">
-        <input type="file" id="imageFile" name="imageFile"/>
+        <input type="file" id="imageFile" name="imageFile" />
         <br />
         <label for="customLabels">Custom Labels (comma-separated):</label>
         <input type="text" id="customLabels" />
@@ -19,11 +19,16 @@
         <input type="submit" value="Submit Image" onclick="postImage()">
     </form>
     <form id="searchForm">
-        <label for="customLabels">Search Prompt:</label>
+        <label for="searchPrompt">Search Prompt:</label>
         <input type="text" id="searchPrompt" />
         <br />
         <input type="submit" value="Get Image" onclick="getImages(event)">
     </form>
+    <div>
+        <h4 id="speechText">Press the button below, and start speaking</h4>
+        <button onclick="startRecognition()">Click here for speak</button>
+        <div id="voiceResult" class="hide"></div>
+    </div>
     <div id="container">
 
     </div>
@@ -83,6 +88,39 @@
 
         alert('d');
     }
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    const status = document.getElementById("speechText"),
+        output = document.getElementById("voiceResult");
+
+    startRecognition = () => {
+        if (SpeechRecognition !== undefined) {
+            let recognition = new SpeechRecognition();
+
+            recognition.onstart = () => {
+                status.innerHTML = `Starting listening, speak in the microphone please 🦻`;
+                output.classList.add("hide");
+            };
+
+            recognition.onspeechend = () => {
+                status.innerHTML = `I stopped listening `;
+                recognition.stop();
+            };
+
+            recognition.onresult = (result) => {
+                output.classList.remove("hide");
+                output.innerHTML = `I'm ${Math.floor(
+                    result.results[0][0].confidence * 100
+                )}% certain you just said: <b>${result.results[0][0].transcript}</b>`;
+                document.getElementById('searchPrompt').value = result.results[0][0].transcript;
+            };
+
+            recognition.start();
+        } else {
+            status.innerHTML = "sorry not supported 😭";
+        }
+    };
+
 </script>
 
 </html>
