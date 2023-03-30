@@ -1,2 +1,4 @@
 boto3
 inflection
+opensearchpy
+requests_aws4auth
