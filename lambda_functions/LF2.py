@@ -40,15 +40,53 @@ os = OpenSearch(
     connection_class=RequestsHttpConnection
 )
 
+
+def lambda_handler(event, context):
+    try:
+        print("query start")
+        print(event)
+        query = event['queryStringParameters']['query']
+        print("query done")
+        
+        res = lex.recognize_text(
+            botId='USQ2IBYLZY',
+            botAliasId='VBGHSU8RK0',
+            localeId='en_US',
+            sessionId=''.join(random.choices(string.ascii_letters + string.digits, k=8)),
+            text=query
+        )
+        print(res)
+        labels = [inflection.singularize(kw['value']['interpretedValue']).lower() for kw in res['sessionState']['intent']['slots'].values() if kw is not None]
+        print(labels)
+        results = [s3.Bucket(photo['bucket']).Object(key=photo['objectKey']).get()['Body'].read().decode().split(',')[1] for photo in search_photos(labels)]
+        
+        status_code = 200
+        
+    except Exception as e:
+        response_body = str(e)
+        print(e)
+        status_code = 500
+
+    return {
+        'statusCode': status_code,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': '*',
+        },
+        'body': json.dumps(results)
+    }
+
 def search_photos(labels):
     if len(labels) == 0:
         return []
     
     query = {
         'query': {
-            'bool': {
+            'bool': {           
                 'should': [
-                    {'match': {'labels': label}} for label in labels
+                    {'match': {'labels': inflection.singularize(label.replace(" ", "")).lower()}} for label in labels
                 ]
             }
         }
@@ -58,25 +96,3 @@ def search_photos(labels):
     hits = res['hits']['hits']
     
     return [hit['_source'] for hit in hits]
-    
-def lambda_handler(event, context):
-    query = json.loads(event['queryStringParameters'])['query']
-    
-    res = lex.recognize_text(
-        botId='USQ2IBYLZY',
-        botAliasId='VBGHSU8RK0',
-        localeId='en_US',
-        sessionId=''.join(random.choices(string.ascii_letters + string.digits, k=8)),
-        text=query
-    )
-    labels = [inflection.singularize(kw['value']['interpretedValue']).lower() for kw in res['sessionState']['intent']['slots'].values() if kw is not None]
-
-    results = [str(base64.b64encode(s3.Bucket(photo['bucket']).Object(key=photo['objectKey']).get()['Body'].read())) for photo in search_photos(labels)]
-
-    return {
-        'statusCode': 200,
-        'headers': {
-            'Access-Control-Allow-Origin': '*'
-        },
-        'body': json.dumps(results)
-    }
