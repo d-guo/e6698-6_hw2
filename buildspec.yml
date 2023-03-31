@@ -37,7 +37,7 @@ phases:
       - echo "Building static website..."
       - cd s3_folder
       # - pip install -r requirements.txt -t .
-      - cp test.html ../build/
+      - cp test.html ../
   post_build:
     commands:
       # - aws lambda update-function-code --function-name $LAMBDA_NAME --region $AWS_DEFAULT_REGION --zip-file fileb://lambda-index-package.zip
@@ -52,7 +52,7 @@ phases:
     #file-format: JunitXml | CucumberJson
 artifacts:
   files:
-    - build/test.html
+    - test.html
   #name: $(date +%Y-%m-%d)
   #discard-paths: yes
   #base-directory: location
