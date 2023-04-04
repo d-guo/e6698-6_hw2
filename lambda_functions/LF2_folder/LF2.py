@@ -66,6 +66,7 @@ def lambda_handler(event, context):
         response_body = str(e)
         print(e)
         status_code = 500
+        results = {}
 
     return {
         'statusCode': status_code,
