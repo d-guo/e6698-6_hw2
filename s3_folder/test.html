@@ -98,7 +98,7 @@
             let recognition = new SpeechRecognition();
 
             recognition.onstart = () => {
-                status.innerHTML = `Starting listening, speak in the microphone please 🦻`;
+                status.innerHTML = `Starting listening, speak in the microphone please `;
                 output.classList.add("hide");
             };
 
@@ -117,7 +117,7 @@
 
             recognition.start();
         } else {
-            status.innerHTML = "sorry not supported 😭";
+            status.innerHTML = "sorry not supported ";
         }
     };
 
