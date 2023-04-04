@@ -8,7 +8,7 @@ from requests_aws4auth import AWS4Auth
 
 
 REGION = 'us-east-1'
-HOST = 'search-opensearch-kxsf2jidw2nj-irs7mydjfyie7i476uususjtzm.us-east-1.es.amazonaws.com'
+HOST = 'search-opensearch-f1emqziclraj-saetzu3aldcg2sxhmitzblysju.us-east-1.es.amazonaws.com/'
 INDEX = 'photos'
 
 
