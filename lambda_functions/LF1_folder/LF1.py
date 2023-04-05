@@ -2,13 +2,14 @@ import boto3
 import inflection
 import json
 import base64
+import os
 
 from opensearchpy import OpenSearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
 
 
 REGION = 'us-east-1'
-HOST = 'search-opensearch-f1emqziclraj-saetzu3aldcg2sxhmitzblysju.us-east-1.es.amazonaws.com'
+HOST = os.environ['OPENSEARCH_ENDPOINT']
 INDEX = 'photos'
 
 
