@@ -43,6 +43,7 @@ os = OpenSearch(
 
 
 def lambda_handler(event, context):
+    print("Hello World")
     try:
         print("query start")
         print(event)
