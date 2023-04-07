@@ -49,7 +49,7 @@
 
         let image_data = await toBase64(image.files[0]);
 
-        const response = axios.put('https://yrnrc1f8jh.execute-api.us-east-1.amazonaws.com/gamma/upload/ass2-b2bucket3/' + image.files[0].name, image_data, {
+        const response = axios.put('https://d4ba8jtwul.execute-api.us-east-1.amazonaws.com/prod/upload/ass2-b2bucket3/' + image.files[0].name, image_data, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'text/base64',
@@ -63,7 +63,7 @@
         event.preventDefault();
         document.getElementById('container').innerHTML = '';
         let user_prompt = document.getElementById('searchPrompt').value;
-        axios.get('https://yrnrc1f8jh.execute-api.us-east-1.amazonaws.com/gamma/search/', {
+        axios.get('https://d4ba8jtwul.execute-api.us-east-1.amazonaws.com/prod/search/', {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'X-Api-Key': 'JWkoJ1ropw17cLJvnf9iQ1E452HylupEaznzcRw8',
