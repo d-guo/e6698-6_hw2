@@ -43,6 +43,7 @@
     });
 
     async function postImage() {
+        event.preventDefault();
         // let image = event.target.files[0];
         let image = document.getElementById('imageFile');
         let labels = document.getElementById('customLabels').value;
@@ -57,6 +58,7 @@
                 'x-amz-meta-customLabels': labels
             },
         });
+        // alert("d");
     }
 
     function getImages(event) {
