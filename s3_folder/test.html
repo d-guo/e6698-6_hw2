@@ -49,7 +49,7 @@
 
         let image_data = await toBase64(image.files[0]);
 
-        const response = axios.put('https://d4ba8jtwul.execute-api.us-east-1.amazonaws.com/prod/upload/ass2-b2bucket3/' + image.files[0].name, image_data, {
+        const response = axios.put('https://d4ba8jtwul.execute-api.us-east-1.amazonaws.com/prod/upload/ass2-b2bucket4/' + image.files[0].name, image_data, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'text/base64',
